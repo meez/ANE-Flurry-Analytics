@@ -10,10 +10,10 @@
 		7940BB87144F2A1A00F7087E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7940BB86144F2A1A00F7087E /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		7940BB8D144F2A1A00F7087E /* FlurryIosExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7940BB8C144F2A1A00F7087E /* FlurryIosExtension.m */; };
 		7940BB99144F2A4500F7087E /* FlashRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 7940BB98144F2A4500F7087E /* FlashRuntimeExtensions.h */; };
+		79435F2F190EBD3D00F8C28A /* libFlurry_4.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79435F2E190EBD3D00F8C28A /* libFlurry_4.4.0.a */; };
 		7997564717316C4700187BD7 /* Flurry.h in Headers */ = {isa = PBXBuildFile; fileRef = 7997564517316C4700187BD7 /* Flurry.h */; };
 		79E4C7FE15A5CE1700FFDEBF /* Flurry_TypeConversion.h in Headers */ = {isa = PBXBuildFile; fileRef = 79E4C7FC15A5CE1700FFDEBF /* Flurry_TypeConversion.h */; };
 		79E4C7FF15A5CE1700FFDEBF /* Flurry_TypeConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 79E4C7FD15A5CE1700FFDEBF /* Flurry_TypeConversion.m */; };
-		79EF554717BD556000170FB8 /* libFlurry_4.2.3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EF554617BD556000170FB8 /* libFlurry_4.2.3.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,10 +21,10 @@
 		7940BB86144F2A1A00F7087E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7940BB8C144F2A1A00F7087E /* FlurryIosExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlurryIosExtension.m; sourceTree = "<group>"; };
 		7940BB98144F2A4500F7087E /* FlashRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashRuntimeExtensions.h; sourceTree = "<group>"; };
+		79435F2E190EBD3D00F8C28A /* libFlurry_4.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.4.0.a; sourceTree = "<group>"; };
 		7997564517316C4700187BD7 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		79E4C7FC15A5CE1700FFDEBF /* Flurry_TypeConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry_TypeConversion.h; sourceTree = "<group>"; };
 		79E4C7FD15A5CE1700FFDEBF /* Flurry_TypeConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Flurry_TypeConversion.m; sourceTree = "<group>"; };
-		79EF554617BD556000170FB8 /* libFlurry_4.2.3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.2.3.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,7 +33,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7940BB87144F2A1A00F7087E /* Foundation.framework in Frameworks */,
-				79EF554717BD556000170FB8 /* libFlurry_4.2.3.a in Frameworks */,
+				79435F2F190EBD3D00F8C28A /* libFlurry_4.4.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,7 +80,7 @@
 		7940BB93144F2A3400F7087E /* FlurryAnalytics */ = {
 			isa = PBXGroup;
 			children = (
-				79EF554617BD556000170FB8 /* libFlurry_4.2.3.a */,
+				79435F2E190EBD3D00F8C28A /* libFlurry_4.4.0.a */,
 				7997564517316C4700187BD7 /* Flurry.h */,
 			);
 			path = FlurryAnalytics;
@@ -125,7 +125,7 @@
 		7940BB7A144F2A1A00F7087E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Stick Sports Ltd";
 			};
 			buildConfigurationList = 7940BB7D144F2A1A00F7087E /* Build configuration list for PBXProject "FlurryIosExtension" */;
@@ -162,7 +162,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -174,10 +179,15 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -186,13 +196,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_LINK_WITH_DYNAMIC_LIBRARIES = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				SDKROOT = iphoneos;
@@ -211,6 +230,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/FlurryAnalytics\"",
+					"$(PROJECT_DIR)/FlurryAnalytics",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -229,6 +249,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/FlurryAnalytics\"",
+					"$(PROJECT_DIR)/FlurryAnalytics",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
