@@ -16,6 +16,13 @@
 				<finalizer>com.sticksports.nativeExtensions.flurry.FlurryExtension</finalizer>
 			</applicationDeployment>
 		</platform>
+		<platform name="Android-x86">
+			<applicationDeployment>
+				<nativeLibrary>FlurryAndroidExtension.jar</nativeLibrary>
+				<initializer>com.sticksports.nativeExtensions.flurry.FlurryExtension</initializer>
+				<finalizer>com.sticksports.nativeExtensions.flurry.FlurryExtension</finalizer>
+			</applicationDeployment>
+		</platform>
 		<platform name="default">
 			<applicationDeployment/>
 		</platform>
