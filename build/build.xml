@@ -28,12 +28,12 @@
 			<classpath>
 				<pathelement location="${android.sdk}/android.jar"/>
 				<pathelement location="../android/libs/FlashRuntimeExtensions.jar"/>
-				<pathelement location="../android/libs/flurryAnalytics_3.4.0.jar"/>
+				<pathelement location="../android/libs/FlurryAnalytics-4.1.0.jar"/>
 			</classpath>
 		</javac>
 
 		<mkdir dir="../android/temp/zip"/>
-		<unzip src="../android/libs/flurryAnalytics_3.4.0.jar" dest="../android/temp/zip"/>
+		<unzip src="../android/libs/FlurryAnalytics-4.1.0.jar" dest="../android/temp/zip"/>
 		<copydir src="../android/temp/zip/com" dest="../android/temp/classes/com"/>
 		
 		<mkdir dir="../temp/android/"/>
