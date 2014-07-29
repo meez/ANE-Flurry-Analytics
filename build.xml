@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Air Native Extension Build Scripts" default="all">
+	
+	<!-- Config -->
+    <import file="support/ant/air.xml"/>
+    <property file="build.properties"/>
+    
+    <property name="src.root" location="src"/>
+    <property name="src.as3" location="src/as3"/>
+    <property name="src.resources" location="src/resources"/>
+    
+    <property name="lib.root" location="lib"/>
+    
+    <property name="build.root" location="build"/>
+    <property name="build.package" location="build/package"/>
+    <property name="build.ane" location="build/ane"/>
+    
+    <condition property="bat" value=".bat" else=""><os family="windows" /></condition>
+    <condition property="exe" value=".exe" else=""><os family="windows" /></condition>
+
+    <!-- All -->
+	<target name="all" depends="clean, compile, package" description="Full build of extension"/>
+    <target name="native-all" depends="clean, native-ios, native-android, package" description="Full build of extension (incl. compilation of native code)"/>
+    
+    <target name="init">
+        <mkdir dir="${build.root}"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.root}"/>
+    </target>
+    
+    <!-- Compile -->
+    <target name="compile" depends="init" description="Build SWC library">
+    
+        <exec executable="${air.sdk.home}/bin/compc${exe}" failonerror="true">
+            <arg line='-include-sources ${src.as3}'/>
+            <arg line='-output ${build.package}/${name}.swc'/>
+            <arg line='-swf-version=14'/>
+            <arg line='-external-library-path+="${air.sdk.home}/frameworks/libs/air/airglobal.swc"'/>
+        </exec>
+
+        <unzip src="${build.package}/${name}.swc" dest="${build.package}">
+            <patternset>
+                <include name="library.swf"/>
+            </patternset>
+        </unzip>
+
+    </target>
+    
+    <!-- Package -->
+    <target name="package" depends="compile" description="Create the extension package">
+
+        <mkdir dir="${build.ane}"/>
+        <copy todir="${build.ane}/default">
+            <fileset dir="${build.package}">
+                <include name="library.swf"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.ane}/android">
+            <fileset dir="${lib.root}/android"/>
+            <fileset dir="${build.package}">
+                <include name="library.swf"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.ane}/ios">
+            <fileset dir="${lib.root}/ios"/>
+            <fileset dir="${build.package}">
+                <include name="library.swf"/>
+            </fileset>
+        </copy>
+
+        <exec executable="${air.sdk.home}/bin/adt${bat}" failonerror="true" dir="${build.ane}">
+            <arg value="-package"/>
+            <arg value="-target"/>
+            <arg value="ane"/>        
+            <arg value="com.sticksports.nativeExtensions.${name}.ane"/>
+            <arg value="${src.resources}/extension.xml"/>
+            <arg line="-swc ${build.package}/${name}.swc"/>
+            <arg line="-platform iPhone-ARM -platformoptions ${src.resources}/platform.xml -C ios/ ."/>
+            <arg line="-platform Android-ARM -C android/ ."/>
+            <arg line="-platform default -C default/ ."/>
+        </exec>
+    </target>
+    
+    <!-- iOS -->
+    <target name="native-ios" description="Build iOS">
+        <property name="build.ios.native" location="${build.root}/native/ios"/>
+
+        <delete dir="${build.ios.native}"/>
+        <mkdir dir="${build.ios.native}"/>
+
+        <exec executable="xcodebuild" failonerror="true" dir="ios/${name}IosExtension">
+            <arg line='-project ${name}IosExtension.xcodeproj'/>
+            <arg line="-alltargets clean"/>
+        </exec>
+        
+        <exec executable="xcodebuild" failonerror="true" dir="ios">
+            <arg line='-project ${name}IosExtension.xcodeproj'/>
+            <arg line="-sdk ${ios.sdk.version}"/>
+            <arg line="-alltargets"/>
+            <arg line="-configuration Release"/>
+            <arg line="SYMROOT=${build.ios.native}"/>
+        </exec>
+        
+        <copy todir="${lib.root}/ios">
+            <fileset dir="${build.ios.native}/Release-iphoneos" includes="lib*.a"/>
+        </copy>
+    </target>
+    
+    <!-- Android -->
+    <target name="native-android" description="Creates AndroidExtension.jar">
+  
+      <ant dir="android" inheritAll="false" inheritRefs="false" target="all"/>
+    
+        <copy todir="${lib.root}/android">
+            <fileset dir="android/build/package"/>
+        </copy>
+        
+        <delete dir="android/build"/>
+    
+    </target>
+
+</project>

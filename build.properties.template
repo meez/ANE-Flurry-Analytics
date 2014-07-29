@@ -1,0 +1,14 @@
+# AIR SDK
+air.sdk.home=path/to/air-sdk
+
+# Release Directory
+mobile.lib=TBD:MOBILE LIB TARGET (DEPRECATED)
+
+# IOS
+ios.sdk.version=iphoneos
+
+# Android
+android.sdk.home=path/to/android-sdk-windows.
+android.sdk.platform=path/to/android-sdk-windows.8/platforms/android-17
+
+name=Flurry

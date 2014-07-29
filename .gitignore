@@ -2,6 +2,9 @@
 temp/*
 test/bin/*
 build.config
+build
+android/build/*
+build.properties
 
 # Eclipse FDT
 .settings/*

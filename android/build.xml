@@ -1,0 +1,53 @@
+<project name="Native android AirDeviceId build" default="all">
+
+  <property name="src.root" location="src"/>
+  <property name="src.java" location="src"/>
+  <property name="lib.root" location="libs"/>
+
+  <property name="build.root" location="build"/>
+  <property name="build.classes" location="build/classes"/>
+  <property name="build.package" location="build/package"/>
+
+  <property file="../build.properties"/>
+
+  <target name="init">
+    <tstamp>
+      <format property="build.time" pattern="yyyy/MM/dd hh:mm"/>
+    </tstamp>
+    <mkdir dir="${build.root}"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build.root}"/>
+  </target>
+
+  <target name="all" depends="clean, package"/>
+
+  <target name="compile" depends="init">
+
+    <mkdir dir="${build.classes}"/>
+
+    <javac source="1.6" target="1.6" srcdir="${src.java}" destdir="${build.classes}" includeantruntime="false">
+      <classpath>
+        <pathelement location="${android.sdk.platform}/android.jar"/>
+        <pathelement location="${lib.root}/FlashRuntimeExtensions.jar"/>
+        <pathelement location="${lib.root}/FlurryAnalytics-4.1.0.jar"/>
+      </classpath>
+    </javac>
+
+  </target>
+
+  <target name="package" depends="compile">
+
+    <jar destfile="${build.package}/${name}AndroidExtension.jar">
+      <manifest>
+        <attribute name="Implementation-Title" value="AirDeviceId ANE"/>
+        <attribute name="Build-Time" value="${build.time}"/>
+      </manifest>
+      <fileset dir="${build.classes}"/>
+      <zipfileset src="${lib.root}/FlurryAnalytics-4.1.0.jar" excludes="META-INF/**,res/**"/>
+    </jar>
+
+  </target>
+
+</project>
