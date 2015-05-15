@@ -48,23 +48,6 @@ DEFINE_ANE_FUNCTION( flurry_setSessionContinueSeconds )
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION( flurry_setSecureTransportEnabled )
-{
-    uint32_t value = 0;
-    if (FREGetObjectAsBool( argv[0], &value ) == FRE_OK )
-    {
-        if( value == 0 )
-        {
-            [Flurry setSecureTransportEnabled:NO];
-        }
-        else
-        {
-            [Flurry setSecureTransportEnabled:YES];
-        }
-    }
-    return NULL;
-}
-
 DEFINE_ANE_FUNCTION( flurry_startSession )
 {
     NSString* sessionId;
@@ -296,7 +279,6 @@ void FlurryContextInitializer( void* extData, const uint8_t* ctxType, FREContext
         MAP_FUNCTION( flurry_setAppVersion, NULL ),
         MAP_FUNCTION( flurry_getFlurryAgentVersion, NULL ),
         MAP_FUNCTION( flurry_setSessionContinueSeconds, NULL ),
-        MAP_FUNCTION( flurry_setSecureTransportEnabled, NULL ),
         MAP_FUNCTION( flurry_startSession, NULL ),
         MAP_FUNCTION( flurry_endSession, NULL ),
         MAP_FUNCTION( flurry_logEvent, NULL ),

@@ -10,31 +10,31 @@
 	<string>FlurryIosExtension</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>885AFE3E-F414-4844-B699-B7E9A59292F2</key>
-		<string>ssh://github.com/StickSports/ANE-Flurry-Analytics.git</string>
+		<key>19025A60FAF7B8904D7158688FA0372674F8E239</key>
+		<string>https://github.com/meez/ANE-Flurry-Analytics.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ios/FlurryIosExtension/FlurryIosExtension.xcodeproj/project.xcworkspace</string>
+	<string>ios/FlurryIosExtension/FlurryIosExtension.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>885AFE3E-F414-4844-B699-B7E9A59292F2</key>
+		<key>19025A60FAF7B8904D7158688FA0372674F8E239</key>
 		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/StickSports/ANE-Flurry-Analytics.git</string>
+	<string>https://github.com/meez/ANE-Flurry-Analytics.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>885AFE3E-F414-4844-B699-B7E9A59292F2</string>
+	<string>19025A60FAF7B8904D7158688FA0372674F8E239</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>885AFE3E-F414-4844-B699-B7E9A59292F2</string>
+			<string>19025A60FAF7B8904D7158688FA0372674F8E239</string>
 			<key>IDESourceControlWCCName</key>
-			<string>Flurry</string>
+			<string>ANE-Flurry-Analytics</string>
 		</dict>
 	</array>
 </dict>

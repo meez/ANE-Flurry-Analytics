@@ -30,8 +30,8 @@
     <javac source="1.6" target="1.6" srcdir="${src.java}" destdir="${build.classes}" includeantruntime="false">
       <classpath>
         <pathelement location="${android.sdk.platform}/android.jar"/>
-        <pathelement location="${lib.root}/FlashRuntimeExtensions.jar"/>
-        <pathelement location="${lib.root}/FlurryAnalytics-4.1.0.jar"/>
+        <pathelement location="${air.sdk.home}/lib/android/FlashRuntimeExtensions.jar"/>
+        <pathelement location="${lib.root}/FlurryAnalytics-5.5.0.jar"/>
       </classpath>
     </javac>
 
@@ -45,7 +45,7 @@
         <attribute name="Build-Time" value="${build.time}"/>
       </manifest>
       <fileset dir="${build.classes}"/>
-      <zipfileset src="${lib.root}/FlurryAnalytics-4.1.0.jar" excludes="META-INF/**,res/**"/>
+      <zipfileset src="${lib.root}/FlurryAnalytics-5.5.0.jar" excludes="META-INF/**,res/**"/>
     </jar>
 
   </target>

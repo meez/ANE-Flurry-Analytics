@@ -20,7 +20,6 @@ public class FlurryExtensionContext extends FREContext
 		functionMap.put( "flurry_setAppVersion", new FlurrySetAppVersion() );
 		functionMap.put( "flurry_getFlurryAgentVersion", new FlurryGetAgentVersion() );
 		functionMap.put( "flurry_setSessionContinueSeconds", new FlurrySetSessionContinueSeconds() );
-		functionMap.put( "flurry_setSecureTransportEnabled", new FlurrySetSecureTransportEnabled() );
 		functionMap.put( "flurry_startSession", new FlurryStartSession() );
 		functionMap.put( "flurry_endSession", new FlurryEndSession() );
 		functionMap.put( "flurry_logEvent", new FlurryLogEvent() );
@@ -32,6 +31,7 @@ public class FlurryExtensionContext extends FREContext
 		functionMap.put( "flurry_setUserGender", new FlurrySetUserGender() );
 		functionMap.put( "flurry_setLocation", new FlurrySetLocation() );
 		functionMap.put( "flurry_setEventLoggingEnabled", new FlurrySetEventLoggingEnabled() );
+        functionMap.put( "flurry_init", new FlurryInitFunction() );
 		return functionMap;
 	}
 

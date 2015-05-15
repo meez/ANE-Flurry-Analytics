@@ -28,7 +28,6 @@ package com.sticksports.nativeExtensions.flurry
 		
 		private static var _sessionStarted : Boolean;
 		private static var _sessionContinueSeconds : int = 10;
-		private static var _secureTransportEnabled : Boolean = false;
 		private static var _eventLoggingEnabled : Boolean = true;
 
 		/**
@@ -69,26 +68,21 @@ package com.sticksports.nativeExtensions.flurry
 				_sessionContinueSeconds = seconds;
 			}
 		}
-		
-		/**
-		 * Set data to be sent over SSL. Should be called before start session. Default is false.
-		 */
-		public static function get secureTransportEnabled() : Boolean
-		{
-			return _secureTransportEnabled;
-		}
-		public static function set secureTransportEnabled( value : Boolean ) : void
-		{
-			if( !_sessionStarted )
-			{
-				initExtension();
-				extensionContext.call( NativeMethods.setSecureTransportEnabled, value );
-				_secureTransportEnabled = value;
-			}
-		}
+        
+        /**
+         * Init the Flurry Analytics agent. This should be called before any other methods, including startSession.
+         * It is safe to call this multiple time as long as the same id is passed each time.
+         * @param id Flurry API Key
+         */
+        public static function init( id : String ) : void
+        {
+            initExtension();
+            extensionContext.call( NativeMethods.init, id);
+        }
 		
 		/**
 		 * Start session, attempt to send saved sessions to the server.
+         * id parameter is @deprecated
 		 */
 		public static function startSession( id : String ) : void
 		{

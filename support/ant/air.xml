@@ -27,21 +27,42 @@
 <condition property="shell.exec" value="start" else="open"><os family="windows" /></condition>
 
 <!-- Dependencies -->
-<property name="compiledeps.root" location="${build.root}/deps"/>
-<property name="compiledeps.as3" location="${compiledeps.root}/as3"/>
-<property name="compiledeps.lib" location="${compiledeps.root}/lib"/>
+<property name="compiledeps.local" location=".meezdeps"/>
+<property name="compiledeps.lib" location="${compiledeps.local}/lib"/>
+<property name="compiledeps.ane" location="${compiledeps.local}/ane"/>
+<property name="compiledeps.ide" location="${compiledeps.local}/ide"/>
+
+<!-- Clean dependencies and force redownload -->
+<target name="clean-deps">
+    <delete dir="${compiledeps.local}"/>
+</target>
 
 <!-- Take the filesets defined by build src/swc and unzip into compiledeps tree -->
 <target name="build-deps">
 
-    <mkdir dir="${compiledeps.as3}"/>
     <mkdir dir="${compiledeps.lib}"/>
-
-    <unzip dest="${compiledeps.as3}" overwrite="false">
-        <fileset refid="compiledeps.src"/>
-    </unzip>
+    
     <copy todir="${compiledeps.lib}" flatten="true">
         <fileset refid="compiledeps.swc"/>
+    </copy>
+
+</target>
+
+<target name="build-ane">
+
+    <mkdir dir="${compiledeps.ane}"/>
+    <copy todir="${compiledeps.ane}" flatten="true">
+        <fileset refid="compiledeps.ane"/>
+    </copy>
+
+</target>
+
+<target name="build-ide">
+
+    <mkdir dir="${compiledeps.ide}"/>
+
+    <copy todir="${compiledeps.ide}" flatten="true">
+        <fileset refid="compiledeps.ide"/>
     </copy>
 
 </target>
@@ -79,19 +100,21 @@
 
 <!-- Compile -->
 <macrodef name="compc">
-    <attribute name="src"/>
     <attribute name="configXML"/>
+    <attribute name="pathRef"/>
     <attribute name="debug"/>
     <attribute name="output"/>
-    <attribute name="sdkPath" default="${flexsdk.home}"/>
+    <attribute name="sdkPath" default="${air.sdk.home}"/>
     <attribute name="sdkConfig" default="flex"/>
     <element name="extra-args" implicit="yes" optional="true"/>
     <sequential>
+        <!-- Flatten path -->
+        <local name="compile.path"/>
+        <pathconvert property="compile.path" pathsep=" -include-sources " refid="@{pathRef}"/>
         <!-- Run compiler -->
-        <exec executable="@{sdkPath}/bin/compc${exe}" failonerror="true">
+        <exec executable="@{sdkPath}/bin/compc${bat}" failonerror="true">
             <arg value='-load-config+=@{configXML}'/>
-            <arg line='-source-path @{src}'/>
-            <arg line='-include-sources @{src}'/>
+            <arg line='-include-sources ${compile.path}'/>
             <arg value='-strict'/>
             <arg value='-debug=@{debug}'/>
             <extra-args/>
@@ -110,11 +133,12 @@
     <attribute name="output"/>
     <attribute name="sdkPath" default="${air.sdk.home}"/>
     <attribute name="sdkConfig" default="flex"/>
-	<attribute name="advancedTelemetry" default="${advanced.telemetry}"/>
+    <attribute name="advancedTelemetry" default="${advanced.telemetry}"/>
     <attribute name="showWarnings" default="true"/>
     <element name="extra-args" implicit="yes" optional="true"/>
     <sequential>
         <!-- Flatten path -->
+	<local name="compile.path"/>
         <pathconvert property="compile.path" pathsep=" -sp " refid="@{pathRef}"/>
         <!-- Run compiler -->
         <java jar="@{sdkPath}/lib/mxmlc-cli.jar" fork="true" failonerror="true">
@@ -145,6 +169,18 @@
     </sequential>
 </macrodef>
 
+<!-- Android -->
+
+<macrodef name="android-deploy">
+    <attribute name="package"/>
+    <sequential>
+        <exec executable="${android.sdk.home}/platform-tools/adb${exe}" failonerror="true">
+            <arg value='install'/>
+            <arg line='-r @{package}'/>
+        </exec>
+    </sequential>
+</macrodef>
+
 <!-- AIR (Mobile) -->
 
 <!-- Package -->
@@ -161,10 +197,15 @@
         <condition property="debug.listen" value="-listen 9999" else="">
             <isset property="debug.fdb"/>
         </condition>
+        <!-- enable IP Address connection for debugging with -Ddebug.ip=XX.XX.XX.XX -->
+        <condition property="debug.connect" value="-connect '${debug.ip}'" else="">
+            <isset property="debug.ip"/>
+        </condition>
         <java jar="@{sdkPath}/lib/adt.jar" fork="true" failonerror="true">
             <arg value="-package"/>
             <arg line="-target @{target}"/>
             <arg line="${debug.listen}"/>
+            <arg line="${debug.connect}"/>
             <arg line="@{hideAneLibSymbols}"/>
             <arg line="@{sign.args}"/>
             <arg value="@{output}"/>
@@ -208,4 +249,22 @@
     </sequential>
 </macrodef>
 
+<!-- Run -->
+<macrodef name="adl-desktop">
+    <attribute name="profile"/>
+    <attribute name="descriptor"/>
+    <attribute name="approot"/>
+    <attribute name="sdkPath" default="${air.sdk.home}"/>
+	<attribute name="failOnError" default="true"/>
+    <element name="extra-args" implicit="yes"/>
+    <sequential>
+        <exec executable="@{sdkPath}/bin/adl${exe}" failonerror="@{failOnError}">
+            <arg line='-profile @{profile}'/>
+            <arg value='@{descriptor}'/>
+            <arg value='@{approot}'/>
+            <extra-args/>
+            <arg line='-- "@{screensize}"'/>
+        </exec>
+    </sequential>
+</macrodef>
 </project>
