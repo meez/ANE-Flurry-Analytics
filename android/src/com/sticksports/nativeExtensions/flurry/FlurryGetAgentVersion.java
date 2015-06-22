@@ -22,7 +22,7 @@ public class FlurryGetAgentVersion implements FREFunction
 		catch ( Exception exception )
 		{
 			Log.w( "Flurry", exception );
+			return null;
 		}
-		return null;
 	}
 }

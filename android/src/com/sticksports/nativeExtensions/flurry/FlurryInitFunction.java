@@ -7,6 +7,8 @@ import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import com.flurry.android.FlurryAgent;
 
+import java.lang.reflect.Constructor;
+
 public class FlurryInitFunction implements FREFunction
 {
 
@@ -15,13 +17,12 @@ public class FlurryInitFunction implements FREFunction
 	{
 		try
 		{
-            Log.d( "Flurry", String.format("Initializing Flurry(%s)", FlurryAgent.getReleaseVersion()) );
 			String id = args[0].getAsString();
-			FlurryAgent.init( context.getActivity(), id );
+            FlurryAgent.init( context.getActivity(), id );
 		}
-		catch ( Exception exception )
+		catch ( Throwable t )
 		{
-			Log.w( "Flurry", exception );
+			Log.w( "Flurry", t );
 		}
 		return null;
 	}

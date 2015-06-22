@@ -19,6 +19,7 @@ public class FlurryLogEvent implements FREFunction
 	{
 		try
 		{
+Log.d("FLURRY", "FlurryLogEvent Function called");
 			String event = args[0].getAsString();
 			if( args.length == 2 )
 			{

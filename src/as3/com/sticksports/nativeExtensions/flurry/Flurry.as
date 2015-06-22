@@ -10,10 +10,10 @@ package com.sticksports.nativeExtensions.flurry
 		private static var extensionContext : ExtensionContext = null;
 		
 		private static function initExtension():void
-		{
+		{            
 			if ( !extensionContext )
 			{
-				extensionContext = ExtensionContext.createExtensionContext( "com.sticksports.nativeExtensions.Flurry", null );
+				extensionContext = ExtensionContext.createExtensionContext( "com.sticksports.nativeExtensions.Flurry", null );                            
 			}
 		}
 		
@@ -76,8 +76,9 @@ package com.sticksports.nativeExtensions.flurry
          */
         public static function init( id : String ) : void
         {
-            initExtension();
+            initExtension();           
             extensionContext.call( NativeMethods.init, id);
+            
         }
 		
 		/**

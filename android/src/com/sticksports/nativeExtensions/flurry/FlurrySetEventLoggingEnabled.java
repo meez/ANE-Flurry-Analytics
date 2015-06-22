@@ -15,6 +15,7 @@ public class FlurrySetEventLoggingEnabled implements FREFunction
 	{
 		try
 		{
+Log.d("Flurry", "Set log enabled function");
 			boolean logging = args[0].getAsBool();
 			FlurryAgent.setLogEnabled( logging );
 		}

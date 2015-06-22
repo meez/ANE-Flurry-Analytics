@@ -10,6 +10,11 @@ build.properties
 .settings/*
 .project
 
+# Intellij
+.idea/
+*.iml
+*.iws
+
 # Eclipse JDT
 android/bin
 android/gen
