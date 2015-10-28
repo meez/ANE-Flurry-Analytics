@@ -36,12 +36,12 @@
     
         <exec executable="${air.sdk.home}/bin/compc${bat}" failonerror="true">
             <arg line='-include-sources ${src.as3}'/>
-            <arg line='-output ${build.package}/flurry-analytics-0.6.0.swc'/>
+            <arg line='-output ${build.package}/flurry-analytics-0.7.0.swc'/>
             <arg line='-swf-version=14'/>
             <arg line='-external-library-path+="${air.sdk.home}/frameworks/libs/air/airglobal.swc"'/>
         </exec>
 
-        <unzip src="${build.package}/flurry-analytics-0.6.0.swc" dest="${build.package}">
+        <unzip src="${build.package}/flurry-analytics-0.7.0.swc" dest="${build.package}">
             <patternset>
                 <include name="library.swf"/>
             </patternset>
@@ -75,9 +75,9 @@
             <arg value="-package"/>
             <arg value="-target"/>
             <arg value="ane"/>        
-            <arg value="flurry-analytics-0.6.0.ane"/>
+            <arg value="flurry-analytics-0.7.0.ane"/>
             <arg value="${src.resources}/extension.xml"/>
-            <arg line="-swc ${build.package}/flurry-analytics-0.6.0.swc"/>
+            <arg line="-swc ${build.package}/flurry-analytics-0.7.0.swc"/>
             <arg line="-platform iPhone-ARM -platformoptions ${src.resources}/platform.xml -C ios/ ."/>
             <arg line="-platform Android-ARM -C android/ ."/>
             <arg line="-platform Android-x86 -C android/ ."/>
