@@ -21,7 +21,6 @@ android/gen
 android/res
 .classpath
 proguard-project.txt
-project.properties
 
 # Xcode
 xcuserdata
