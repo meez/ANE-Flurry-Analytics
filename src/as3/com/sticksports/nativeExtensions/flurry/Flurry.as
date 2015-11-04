@@ -1,65 +1,64 @@
 package com.sticksports.nativeExtensions.flurry
 {
 	import flash.external.ExtensionContext;
+    import flash.system.Capabilities;
 
 	public class Flurry
 	{
-		public static const GENDER_MALE : String = "m";
-		public static const GENDER_FEMALE : String = "f";
+        // Definitions
+        
+        /** Gender */
+		public static const GENDER_MALE:String="m";
+		public static const GENDER_FEMALE:String="f";
 		
-		private static var extensionContext : ExtensionContext = null;
+        // Static vars
+        
+        /** Extension Context */
+		private static var extensionContext:ExtensionContext=null;
+        
+        /** Session is started */
+        private static var _sessionStarted:Boolean;
+        
+        /** Session continue seconds */
+		private static var _sessionContinueSeconds:int=10;
+        
+        /** Event logging enabled */
+		private static var _eventLoggingEnabled:Boolean=true;
+        
+        // Public static methods
 		
-		private static function initExtension():void
-		{            
-			if ( !extensionContext )
-			{
-				extensionContext = ExtensionContext.createExtensionContext( "com.sticksports.nativeExtensions.Flurry", null );                            
-			}
+		/** Is the extension supported */
+		public static function get isSupported():Boolean
+		{
+			return isAndroid() || isIos();
 		}
 		
-		/**
-		 * Is the extension supported
-		 */
-		public static function get isSupported() : Boolean
+		/** Override the app version. Should be called before start session. */
+		public static function setAppVersion(version:String):void
 		{
-			initExtension();
-			return extensionContext ? true : false;
-		}
-		
-		private static var _sessionStarted : Boolean;
-		private static var _sessionContinueSeconds : int = 10;
-		private static var _eventLoggingEnabled : Boolean = true;
-
-		/**
-		 * Override the app version. Should be called before start session.
-		 */
-		public static function setAppVersion( version : String ) : void
-		{
-			if( !_sessionStarted )
+			if(!_sessionStarted)
 			{
 				initExtension();
-				extensionContext.call( NativeMethods.setAppVersion, version );
+				extensionContext.call(NativeMethods.setAppVersion, version);
 			}
 		}
 		
-		/**
-		 * The Flurry Agent version number. Should be called before start session.
-		 */
-		public static function get flurryAgentVersion() : String
+		/** The Flurry Agent version number. Should be called before start session. */
+		public static function get flurryAgentVersion():String
 		{
 			initExtension();
-			var version : String = String( extensionContext.call( NativeMethods.getFlurryAgentVersion ) );
+			var version:String=String(extensionContext.call(NativeMethods.getFlurryAgentVersion));
 			return version;
 		}
 		
-		/**
-		 * Should be called before start session. Default is 10.
-		 */
-		public static function get sessionContinueSeconds() : int
+		/** Get the session continue seconds */
+		public static function get sessionContinueSeconds():int
 		{
 			return _sessionContinueSeconds;
 		}
-		public static function set sessionContinueSeconds( seconds : int ) : void
+        
+        /** Set the session continue seconds. Must be called before starting session. Default is 10 */
+		public static function set sessionContinueSeconds(seconds:int ):void
 		{
 			if( !_sessionStarted )
 			{
@@ -69,180 +68,195 @@ package com.sticksports.nativeExtensions.flurry
 			}
 		}
         
-        /**
-         * Init the Flurry Analytics agent. This should be called before any other methods, including startSession.
+        /**Init the Flurry Analytics agent. This should be called before any other methods, including startSession.
          * It is safe to call this multiple time as long as the same id is passed each time.
+         * This is Android call only
          * @param id Flurry API Key
          */
-        public static function init( id : String ) : void
+        public static function init(id:String):void
         {
-            initExtension();           
-            extensionContext.call( NativeMethods.init, id);
+            if (!isAndroid())
+            {
+                trace("[FlurryAnalytics.ane] Ignoring init() call for non-Android device");
+                return;
+            }
             
+            initExtension();           
+            extensionContext.call(NativeMethods.init, id);
         }
 		
-		/**
-		 * Start session, attempt to send saved sessions to the server.
-         * id parameter is @deprecated
-		 */
-		public static function startSession( id : String ) : void
+		/** Start session, attempt to send saved sessions to the server. */
+		public static function startSession(id:String):void
 		{
 			initExtension();
-			extensionContext.call( NativeMethods.startSession, id );
+			extensionContext.call(NativeMethods.startSession, id);
 			_sessionStarted = true;
 		}
 		
-		/**
-		 * End session - android only.
-		 */
-		public static function endSession() : void
+		/** End session */
+		public static function endSession():void
 		{
 			initExtension();
-			extensionContext.call( NativeMethods.endSession );
+			extensionContext.call(NativeMethods.endSession);
 			_sessionStarted = false;
 		}
 		
-		/**
-		 * Log events.
-		 */
-		public static function logEvent( eventName : String, parameters : Object = null ) : void
+		/** Log events. */
+		public static function logEvent(eventName:String, parameters:Object=null):void
 		{
-			if( parameters )
+            initExtension();
+			if(parameters)
 			{
-				var array : Array = new Array();
-				for( var key : String in parameters )
+				var array:Array = [];
+				for(var key:String in parameters )
 				{
-					array.push( key );
-					array.push( String( parameters[key] ) );
+					array.push(key);
+					array.push(String(parameters[key]));
 				}
-				initExtension();
-				extensionContext.call( NativeMethods.logEvent, eventName, array );
+				extensionContext.call(NativeMethods.logEvent, eventName, array);
 			}
 			else
 			{
-				initExtension();
-				extensionContext.call( NativeMethods.logEvent, eventName );
+				extensionContext.call(NativeMethods.logEvent, eventName);
 			}
 		}
 		
-		/**
-		 * Log errors.
-		 */
-		public static function logError( errorId : String, message : String ) : void
+		/** Log errors. */
+		public static function logError(errorId:String, message:String):void
 		{
 			initExtension();
-			extensionContext.call( NativeMethods.logError, errorId, message );
+			extensionContext.call(NativeMethods.logError, errorId, message);
 		}
 		
-		/**
-		 * Log timed events.
-		 */
-		public static function startTimedEvent( eventName : String, parameters : Object = null ) : void
+		/** Log timed events. */
+		public static function startTimedEvent(eventName:String, parameters:Object=null):void
 		{
+            initExtension();
 			if( parameters )
 			{
-				var array : Array = new Array();
-				for( var key : String in parameters )
+				var array:Array = [];
+				for(var key:String in parameters )
 				{
-					array.push( key );
-					array.push( String( parameters[key] ) );
+					array.push(key);
+					array.push(String(parameters[key]));
 				}
-				initExtension();
-				extensionContext.call( NativeMethods.startTimedEvent, eventName, array );
+				extensionContext.call(NativeMethods.startTimedEvent, eventName, array);
 			}
 			else
 			{
-				initExtension();
-				extensionContext.call( NativeMethods.startTimedEvent, eventName );
+				extensionContext.call(NativeMethods.startTimedEvent, eventName);
 			}
 		}
 		
-		/**
-		 * Log timed events. Non-null parameters will updater the event parameters.
-		 */
-		public static function endTimedEvent( eventName : String, parameters : Object = null ) : void
+		/** Log timed events. Non-null parameters will updater the event parameters. */
+		public static function endTimedEvent(eventName:String, parameters:Object=null):void
 		{
-			if( parameters )
+            initExtension();
+			if(parameters)
 			{
-				var array : Array = new Array();
-				for( var key : String in parameters )
+				var array:Array = [];
+				for(var key:String in parameters)
 				{
-					array.push( key );
-					array.push( String( parameters[key] ) );
+					array.push(key);
+					array.push(String( parameters[key]));
 				}
-				initExtension();
-				extensionContext.call( NativeMethods.endTimedEvent, eventName, array );
+				extensionContext.call(NativeMethods.endTimedEvent, eventName, array);
 			}
 			else
 			{
-				initExtension();
-				extensionContext.call( NativeMethods.endTimedEvent, eventName );
+				extensionContext.call(NativeMethods.endTimedEvent, eventName);
 			}
 		}
 		
-		/**
-		 * Set user's id in your system.
-		 */
-		public static function setUserId( id : String ) : void
+		/** Set user's id in your system. */
+		public static function setUserId(id:String):void
 		{
 			initExtension();
-			extensionContext.call( NativeMethods.setUserId, id );
+			extensionContext.call(NativeMethods.setUserId, id);
 		}
 		
-		/**
-		 * Set user's age in years
-		 */
-		public static function setUserAge( age : int ) : void
+		/** Set user's age in years */
+		public static function setUserAge(age:int ):void
 		{
 			initExtension();
-			extensionContext.call( NativeMethods.setUserAge, age );
+			extensionContext.call(NativeMethods.setUserAge, age);
 		}
 		
-		/**
-		 * Set user's gender ("m" or "f")
-		 */
-		public static function setUserGender( gender : String ) : void
+		/** Set user's gender ("m" or "f") */
+		public static function setUserGender(gender:String):void
 		{
-			if( gender == GENDER_MALE || gender == GENDER_FEMALE )
-			{
-				initExtension();
-				extensionContext.call( NativeMethods.setUserGender, gender );
-			}
+            if ([GENDER_FEMALE, GENDER_MALE].indexOf(gender) < 0)
+            {
+                trace("[FlurryAnalytics.ane] Could not set gender (" + gender + ")");
+                return;
+            }
+                
+            initExtension();
+            extensionContext.call(NativeMethods.setUserGender, gender);
 		}
 		
-		/**
-		 * Set location information - iOS only
-		 */
-		public static function setLocation( latitude : Number, longitude : Number, horizontalAccuracy : Number, verticalAccuracy : Number ) : void
+		/** Set location information - iOS only */
+		public static function setLocation(latitude:Number, longitude:Number, horizontalAccuracy:Number, verticalAccuracy:Number):void
 		{
 			initExtension();
-			extensionContext.call( NativeMethods.setLocation, latitude, longitude, horizontalAccuracy, verticalAccuracy );
+			extensionContext.call(NativeMethods.setLocation, latitude, longitude, horizontalAccuracy, verticalAccuracy);
 		}
 		
-		/**
-		 * Enable logging. Default is true.
-		 */
-		public static function get eventLoggingEnabled() : Boolean
+		/** Get event logging setting */
+		public static function get eventLoggingEnabled():Boolean
 		{
 			return _eventLoggingEnabled;
 		}
-		public static function set eventLoggingEnabled( value : Boolean ) : void
+        
+        /** Set event logging (default is true) */
+		public static function set eventLoggingEnabled(value:Boolean ):void
 		{
 			initExtension();
-			extensionContext.call( NativeMethods.setEventLoggingEnabled, value );
+			extensionContext.call(NativeMethods.setEventLoggingEnabled, value);
 			_eventLoggingEnabled = value;
 		}
 		
-		/**
-		 * Clean up the extension - only if you no longer need it or want to free memory.
-		 */
-		public static function dispose() : void
+		/** Clean up the extension - only if you no longer need it or want to free memory. */
+		public static function dispose():void
 		{
-			if( extensionContext )
+			if(extensionContext)
 			{
 				extensionContext.dispose();
 				extensionContext = null;
 			}
+		}
+        
+        // Implementation
+        
+        /** Init the extension */
+		private static function initExtension():void
+		{            
+			if (!extensionContext)
+			{
+                try
+                {
+				    extensionContext = ExtensionContext.createExtensionContext("com.sticksports.nativeExtensions.Flurry", null);
+                }
+                catch (e:Error)
+                {
+                    extensionContext = null;
+                    trace("[FlurryAnalytics.ane] Could not create extension (" + e.toString() + ")");
+                }
+			}
+		}
+        
+        // Helpers
+        
+        /** Is iOS Device */
+        private static function isIos():Boolean
+		{
+			return Capabilities.manufacturer.indexOf('iOS') > -1;
+		}
+		
+        /** Is Android Device */
+		private static function isAndroid():Boolean
+		{
+			return Capabilities.manufacturer.indexOf('Android') > -1;
 		}
 	}
 }
