@@ -17,7 +17,7 @@ public class FlurrySetUserGender implements FREFunction
 		try
 		{
 			String genderString = args[0].getAsString();
-			byte gender = genderString == "f" ? Constants.FEMALE : Constants.MALE;
+			byte gender = genderString.equals("f") ? Constants.FEMALE : Constants.MALE;
 			FlurryAgent.setGender( gender );
 		}
 		catch ( Exception exception )

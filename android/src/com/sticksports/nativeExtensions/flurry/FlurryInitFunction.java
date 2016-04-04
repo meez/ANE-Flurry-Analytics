@@ -7,8 +7,6 @@ import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import com.flurry.android.FlurryAgent;
 
-import java.lang.reflect.Constructor;
-
 public class FlurryInitFunction implements FREFunction
 {
 
