@@ -24,6 +24,7 @@ proguard-project.txt
 
 # Xcode
 xcuserdata
+.xcworkspace
 
 # OS X
 Icon
